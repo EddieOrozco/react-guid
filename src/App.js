@@ -18,8 +18,10 @@ class App extends Component {
         age: 41,
       },
     ],
+    showPersons: false,
   };
 
+  // Methods
   switchNameHandler = (newName) => {
     // console.log('was clicked');
     this.setState({
@@ -59,6 +61,13 @@ class App extends Component {
     });
   };
 
+  togglePersonsHandler = () => {
+    // Deconstruction
+    const doesShow = this.state.showPersons;
+    // Changing showPersons state with toggle
+    this.setState({ showPersons: !doesShow });
+  };
+
   render() {
     const style = {
       backgroudColor: 'white',
@@ -71,28 +80,29 @@ class App extends Component {
       <div className='App'>
         <h1>Hi Im React</h1>
         <p>This is working</p>
-        <button
-          style={style}
-          onClick={() => this.switchNameHandler('Eduardo!!!!')}
-        >
-          Switch Name
+        <button style={style} onClick={this.togglePersonsHandler}>
+          Toggle Persons
         </button>
-        <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}
-        />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-          click={this.switchNameHandler.bind(this, 'Ed!')}
-          changed={this.nameChangeHandler}
-        >
-          My Hobbies: Truck Buying
-        </Person>
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age}
-        />
+        {this.state.showPersons === true ? (
+          <div>
+            <Person
+              name={this.state.persons[0].name}
+              age={this.state.persons[0].age}
+            />
+            <Person
+              name={this.state.persons[1].name}
+              age={this.state.persons[1].age}
+              click={this.switchNameHandler.bind(this, 'Ed!')}
+              changed={this.nameChangeHandler}
+            >
+              My Hobbies: Truck Buying
+            </Person>
+            <Person
+              name={this.state.persons[2].name}
+              age={this.state.persons[2].age}
+            />
+          </div>
+        ) : null}
       </div>
     );
   }
