@@ -5,43 +5,15 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     persons: [
-      {
-        name: 'Eddie',
-        age: 27,
-      },
-      {
-        name: 'Josh',
-        age: 30,
-      },
-      {
-        name: 'Goku',
-        age: 41,
-      },
+      { id: 0, name: 'Eddie', age: 27 },
+      { id: 1, name: 'Josh', age: 30 },
+      { id: 2, name: 'Goku', age: 41 },
     ],
     showPersons: false,
   };
 
   // Methods
-  switchNameHandler = (newName) => {
-    // console.log('was clicked');
-    this.setState({
-      persons: [
-        {
-          name: newName,
-          age: 27,
-        },
-        {
-          name: 'Josh',
-          age: 30,
-        },
-        {
-          name: 'Vegita',
-          age: 35,
-        },
-      ],
-    });
-  };
-
+  // ARRAYS AND OBJECTS ARE REFERENCE TYPES
   nameChangeHandler = (event) => {
     this.setState({
       persons: [
@@ -62,10 +34,20 @@ class App extends Component {
   };
 
   togglePersonsHandler = () => {
-    // Deconstruction
+    // Deconstruction //POINTER
     const doesShow = this.state.showPersons;
     // Changing showPersons state with toggle
     this.setState({ showPersons: !doesShow });
+  };
+
+  deletePersonHandler = (personIndex) => {
+    // Set a Pointer
+    // const persons = this.state.persons.slice(); // Copy of persons
+    const persons = [...this.state.persons]; // Copy of persons
+    // Change element Pointer is Pointing to
+    persons.splice(personIndex, 1);
+    // Make Changes with set state
+    this.setState({ persons: persons });
   };
 
   render() {
@@ -82,8 +64,15 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map((person) => {
-            return <Person name={person.name} age={person.age} />;
+          {this.state.persons.map((person, index) => {
+            return (
+              <Person
+                key={person.id}
+                name={person.name}
+                age={person.age}
+                click={() => this.deletePersonHandler(index)}
+              />
+            );
           })}
         </div>
       );
