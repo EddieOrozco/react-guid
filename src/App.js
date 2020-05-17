@@ -14,22 +14,27 @@ class App extends Component {
 
   // Methods
   // ARRAYS AND OBJECTS ARE REFERENCE TYPES
-  nameChangeHandler = (event) => {
+  nameChangeHandler = (event, id) => {
+    // findIndex method works the same as map method
+    // personIndex holds the id
+    const personIndex = this.state.persons.findIndex((p) => {
+      return p.id === id;
+    });
+
+    // Pointer
+    // COPY of state with spread operator and fetching the personIndex
+    const person = { ...this.state.persons[personIndex] };
+
+    // Updating person name using the COPY / Pointer
+    person.name = event.target.value;
+
+    // Updating the Array ALWAYS working w/ COPY
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    // Now setState can be updated with all the features functionality
     this.setState({
-      persons: [
-        {
-          name: 'Eduardo',
-          age: 27,
-        },
-        {
-          name: event.target.value,
-          age: 30,
-        },
-        {
-          name: 'Goku',
-          age: 41,
-        },
-      ],
+      persons: persons, // Copy on Copy
     });
   };
 
@@ -71,6 +76,7 @@ class App extends Component {
                 name={person.name}
                 age={person.age}
                 click={() => this.deletePersonHandler(index)}
+                changed={(event) => this.nameChangeHandler(event, person.id)}
               />
             );
           })}
